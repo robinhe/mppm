@@ -1,10 +1,14 @@
 {
   "name": "mppm",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1-alpha.3",
   "description": "",
   "main": "index.js",
+  "files": ["dist/*"],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -fr dist",
+    "dist": "tsc",
+    "build": "npm run clean && npm run dist"
   },
   "repository": {
     "type": "git",
@@ -15,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/helongbin/mppm/issues"
   },
-  "homepage": "https://github.com/helongbin/mppm#readme"
+  "homepage": "https://github.com/helongbin/mppm#readme",
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/node": "^11.13.4",
+    "glob": "^7.1.3",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.15.0",
+    "typescript": "^3.4.3"
+  },
+  "bin": "dist/cli.js"
 }
