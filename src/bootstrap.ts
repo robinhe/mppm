@@ -1,38 +1,13 @@
 
 import { execSync } from 'child_process';
 import { copyFileSync, readFileSync, writeFileSync } from 'fs';
-import * as glob from 'glob';
 import { resolve } from 'path';
 
-import { getConfig } from './config';
-
-const config = getConfig();
-
-const packagesPattern = config.packages;
-const packageFolders: string[] = [];
-packagesPattern.forEach(pattern => {
-  const folders = glob.sync(pattern);
-  packageFolders.push(...folders);
-});
-
-// console.log(packageFolders);
-const packageNames: string[] = [];
-const packageMaps = packageFolders.map(folder => {
-  const packageJsonFile = resolve(folder, 'package.json');
-  const packageJsonContent = readFileSync(packageJsonFile);
-  const packageJsonObj: IPackageJsonObj = JSON.parse(packageJsonContent.toString());
-
-  packageNames.push(packageJsonObj.name);
-  return {
-    cwd: resolve(folder),
-    name: packageJsonObj.name,
-    packageJsonObj,
-  }
-});
+import { packageMaps, packageNames } from './config';
 
 // console.log(packageMaps);
 
-packageMaps.forEach(({ name, cwd, packageJsonObj }) => {
+packageMaps.forEach(({ name, path, packageJsonObj }) => {
   const installedDevDependencies: IDependencyObj[] = [];
   const installedDependencies: IDependencyObj[] = [];
   const linkedDevDependencies: IDependencyObj[] = [];
@@ -55,8 +30,8 @@ packageMaps.forEach(({ name, cwd, packageJsonObj }) => {
   });
 
   // generate backup for package.json
-  const sourcePackageJsonFile = resolve(cwd, 'package.json');
-  const destPackageJsonFile = resolve(cwd, 'package.json.backup');
+  const sourcePackageJsonFile = resolve(path, 'package.json');
+  const destPackageJsonFile = resolve(path, 'package.json.backup');
   copyFileSync(sourcePackageJsonFile, destPackageJsonFile);
 
   // remove link packages from package.json
@@ -76,11 +51,11 @@ packageMaps.forEach(({ name, cwd, packageJsonObj }) => {
   writeFileSync(sourcePackageJsonFile, JSON.stringify(packageJsonObjWithoutLinkedPackages, null, 2));
 
   // install
-  console.log(execSync('npm i', { cwd }).toString());
+  console.log(execSync('npm i', { cwd: path }).toString());
 
   // put back link packages into package.json
   copyFileSync(destPackageJsonFile, sourcePackageJsonFile);
-  execSync(`rm -fr ${destPackageJsonFile}`, { cwd });
+  execSync(`rm -fr ${destPackageJsonFile}`, { cwd: path });
 
   // link
   // todo: need it check whether the versions are consitent before link internal packages?
@@ -89,7 +64,7 @@ packageMaps.forEach(({ name, cwd, packageJsonObj }) => {
   linkedPackages.forEach(linkedPackage => {
     const linkedPackageMap =
       packageMaps.find(packageMap => packageMap.name === linkedPackage.name);
-    const linkedPackagePath = linkedPackageMap!.cwd;
-    execSync(`npm link ${linkedPackagePath}`, { cwd }).toString();
+    const linkedPackagePath = linkedPackageMap!.path;
+    execSync(`npm link ${linkedPackagePath}`, { cwd: path }).toString();
   });
 });

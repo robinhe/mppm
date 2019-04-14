@@ -8,9 +8,15 @@ const bootstrap = () => {
   console.log(execSync(`node ${bootstrapFile}`).toString());
 };
 
+const publish = () => {
+  const publishFile = resolve(__dirname, './publish');
+  console.log(execSync(`node ${publishFile}`).toString());
+}
+
 const mppmArgvs = process.argv.slice(2);
 
 switch (mppmArgvs[0]) {
   case 'bootstrap': bootstrap(); break;
+  case 'publish': publish(); break;
   default: console.log('argv is invalid'); break;
 }
