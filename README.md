@@ -39,6 +39,8 @@ Default is `dist`, it will always run `npm run dist` before publish each package
 Specified branch to be committed
 5. commitMessage  
 Specified message to be committed
+6. publishRegistry
+Your registry to publish, default is `https://registry.npmjs.org/`
 
 ## Command
 ### bootsrap

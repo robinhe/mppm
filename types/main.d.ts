@@ -29,6 +29,7 @@ interface IPackageMap extends IPackageInfo {
 interface IConfig {
   packages: string[];
   publishBranch: string;
+  publishRegistry: string;
   commitBranch?: string;
   commitMessage?: string;
   versionUpgradeStep: string;

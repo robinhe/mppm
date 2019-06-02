@@ -1,6 +1,6 @@
 {
   "name": "mppm",
-  "version": "0.0.1-beta.3",
+  "version": "0.0.1-beta.4",
   "description": "Multiple packages project manager",
   "keywords": ["Multiple packages", "packages manager"],
   "main": "index.js",
@@ -11,8 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -fr dist",
     "dist": "tsc",
-    "build": "npm run clean && npm run dist",
-    "publish": "npm run build && npm publish"
+    "build": "npm run clean && npm run dist"
   },
   "repository": {
     "type": "git",

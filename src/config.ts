@@ -22,6 +22,7 @@ export const enum versionUpgradeStep {
 const defaultConfig = {
   packages: ['packages/*'],
   publishBranch: 'origin/master',
+  publishRegistry: 'https://registry.npmjs.org/',
   commitMessage: 'Packages published',
   versionUpgradeStep: versionUpgradeStep.patch,
   prepublishCommand: 'dist',

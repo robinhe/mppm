@@ -44,7 +44,7 @@ const changePackageDependencyVersion = (pkgPath: string, dependencyName: string,
 const publishPackage = ({ name, version, path }: IPackageInfo) => {
   const newVersion = getNewVersion(version);
   changePackageVersion(path);
-  execSync(`npm publish`, { cwd: path });
+  execSync(`npm publish --registry ${config.publishRegistry}`, { cwd: path });
   publishedPackages.push({name, previousVersion: version, newVersion});
 };
 
