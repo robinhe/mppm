@@ -9,6 +9,7 @@ interface IDependency {
 interface IPackageInfo {
   name: string;
   path: string;
+  version: string;
 }
 interface IPackageJsonObj {
   name: string;
@@ -23,4 +24,19 @@ interface IChangedPackage extends IDependencyObj {
 
 interface IPackageMap extends IPackageInfo {
   packageJsonObj: IPackageJsonObj;
+}
+
+interface IConfig {
+  packages: string[];
+  publishBranch: string;
+  commitBranch?: string;
+  commitMessage?: string;
+  versionUpgradeStep: string;
+  prepublishCommand: string;
+}
+
+interface IPublishedPackage {
+  name: string;
+  previousVersion: string;
+  newVersion: string;
 }

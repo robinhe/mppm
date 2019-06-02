@@ -1,7 +1,7 @@
 {
   "name": "mppm",
-  "version": "0.0.1-alpha.8",
-  "description": "",
+  "version": "0.0.1-beta.1",
+  "description": "Multiple packages project manager",
   "main": "index.js",
   "files": [
     "dist/*"
@@ -16,8 +16,8 @@
     "type": "git",
     "url": "git+https://github.com/helongbin/mppm.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "https://github.com/helongbin",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/helongbin/mppm/issues"
   },
@@ -30,5 +30,8 @@
     "tslint": "^5.15.0",
     "typescript": "^3.4.3"
   },
-  "bin": "dist/cli.js"
+  "bin": "dist/cli.js",
+  "engines": {
+    "node": ">=8"
+  }
 }

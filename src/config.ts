@@ -8,29 +8,36 @@ import { existsSync, readFileSync } from 'fs';
 import * as glob from 'glob';
 import { resolve } from 'path';
 
-const configFilePath = resolve('./', 'mppm.json');
+const configFilePath = resolve('./', 'mppm.config.js');
 export const enum versionAssociation {
   indenpendent = 'independent',
   consistent = 'consistent',
+}
+export const enum versionUpgradeStep {
+  patch = 'patch',
+  minor = 'minor',
+  major = 'major',
 }
 
 const defaultConfig = {
   packages: ['packages/*'],
   publishBranch: 'origin/master',
-  commitBranch: 'origin/master',
+  commitMessage: 'Packages published',
+  versionUpgradeStep: versionUpgradeStep.patch,
+  prepublishCommand: 'dist',
 };
 
 // fixedConfig include some features which will be supported in future
 const fixedConfig = {
   // todo: support the feature all packages version are "consistent"
   versionAssociation: versionAssociation.indenpendent,
+  versionUpgradeStep: versionUpgradeStep.patch,
 };
 
-const getConfig = () => {
+export const getConfig = (): IConfig => {
   let userConfig = {};
   if (existsSync(configFilePath)) {
-    const configContent = readFileSync(configFilePath);
-    userConfig = JSON.parse(configContent.toString());
+    userConfig = require(configFilePath);
   }
   return {...defaultConfig, ...userConfig, ...fixedConfig};
 };
@@ -54,5 +61,6 @@ export const packageMaps: IPackageMap[] = packageFolders.map(folder => {
     name: packageJsonObj.name,
     packageJsonObj,
     path: resolve(folder),
-  }
+    version: packageJsonObj.version,
+  };
 });

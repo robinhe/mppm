@@ -13,16 +13,17 @@ export const changedPackages: IChangedPackage[] = [];
 
 const getPackagesLinkSpecifiedPackage = (packageName: string, packageMapsCopy: IPackageMap[]) => {
   const packagesLinkThePackage: IPackageInfo[] = [];
-  packageMapsCopy.forEach(({ name, path, packageJsonObj: { dependencies, devDependencies }}) => {
+  packageMapsCopy.forEach(({ name, path, packageJsonObj: { dependencies, devDependencies, version }}) => {
     const depends = {...devDependencies || {}, ...dependencies || {}};
     if (Object.keys(depends).includes(packageName)) {
-      packagesLinkThePackage.push({ name, path });
+      packagesLinkThePackage.push({ name, path, version });
     }
   });
   return packagesLinkThePackage;
 };
 
 packageMaps.forEach(({ name, path, packageJsonObj }) => {
+  // fixme: change package root folder would not be regarded as changed package
   if (changedFilePaths.find(filePath => filePath.includes(path))) {
     changedPackages.push({
       name,
@@ -31,5 +32,5 @@ packageMaps.forEach(({ name, path, packageJsonObj }) => {
     });
   }
 });
-
-console.log(`changedPackages ${changedPackages}`);
+// console.log('changedFilePaths', changedFilePaths);
+console.log('changedPackages: ', changedPackages.map(item => item.name).join());
