@@ -1,6 +1,6 @@
 {
   "name": "mppm",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "description": "Multiple packages project manager",
   "keywords": ["Multiple packages", "packages manager"],
   "main": "index.js",
