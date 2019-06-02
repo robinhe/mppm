@@ -13,7 +13,7 @@ packageMaps.forEach(({ name, path, packageJsonObj }) => {
   const linkedDevDependencies: IDependencyObj[] = [];
   const linkedDependencies: IDependencyObj[] = [];
 
-  Object.entries(packageJsonObj.dependencies).forEach(([dependency, version]) => {
+  Object.entries(packageJsonObj.dependencies || []).forEach(([dependency, version]) => {
     if (packageNames.includes(dependency)) {
       linkedDependencies.push({ name: dependency, version });
     } else {
@@ -21,7 +21,7 @@ packageMaps.forEach(({ name, path, packageJsonObj }) => {
     }
   });
 
-  Object.entries(packageJsonObj.devDependencies).forEach(([devDependency, version]) => {
+  Object.entries(packageJsonObj.devDependencies || []).forEach(([devDependency, version]) => {
     if (packageNames.includes(devDependency)) {
       linkedDevDependencies.push({ name: devDependency, version });
     } else {
