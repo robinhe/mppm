@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 
 import { changedPackages } from './changed';
-import { getConfig, packageMaps, versionUpgradeStep} from './config';
+import { getConfig, packageMaps, versionUpgradeStep } from './config';
 
 /**
  * 1. check current publish branch config
@@ -27,17 +27,17 @@ const changePackageVersion = (pkgPath: string) => {
   const packageJsonFile = join(pkgPath, '/package.json');
   let newVersion: string;
   const newJsonString = readFileSync(packageJsonFile).toString()
-  .replace(/("version": ")(.*?)"/, (match, $1, $2) => {
-    newVersion = getNewVersion($2);
-    return `${$1}${newVersion}"`;
-  });
+    .replace(/("version": ")(.*?)"/, (match, $1, $2) => {
+      newVersion = getNewVersion($2);
+      return `${$1}${newVersion}"`;
+    });
   writeFileSync(packageJsonFile, newJsonString);
 };
 const changePackageDependencyVersion = (pkgPath: string, dependencyName: string, dependencyVersion: string) => {
   const packageJsonFile = join(pkgPath, '/package.json');
   const reg = new RegExp(`("${dependencyName}": ")(.*?)"`);
   const newJsonString = readFileSync(packageJsonFile).toString()
-  .replace(reg, (match, $1, $2) => `${$1}${dependencyVersion}"`);
+    .replace(reg, (match, $1, $2) => `${$1}${dependencyVersion}"`);
   writeFileSync(packageJsonFile, newJsonString);
 };
 
@@ -45,7 +45,7 @@ const publishPackage = ({ name, version, path }: IPackageInfo) => {
   const newVersion = getNewVersion(version);
   changePackageVersion(path);
   execSync(`npm publish --registry ${config.publishRegistry}`, { cwd: path });
-  publishedPackages.push({name, previousVersion: version, newVersion});
+  publishedPackages.push({ name, previousVersion: version, newVersion });
 };
 
 const execPublish = () => {
@@ -57,15 +57,10 @@ const execPublish = () => {
   changedPackages.forEach(({ name, version, packagesLinkThePackage }) => {
     const pkg = packageMaps.find(pkg => pkg.name === name);
     const newVersion = getNewVersion(version);
-    execSync(`npm run ${config.prepublishCommand}`, { cwd: pkg!.path });
     publishPackage({ path: pkg!.path, version, name });
 
     packagesLinkThePackage.forEach(({ path: linkedPkgPath, version: linkedPkgVersion, name: linkedPkgName }) => {
       changePackageDependencyVersion(linkedPkgPath, name, newVersion);
-      // execSync(`npm install ${name}@${newVersion}`, { cwd: pkg!.path });
-      execSync(`npm link ${pkg!.path}`, { cwd: linkedPkgPath });
-      execSync(`npm run ${config.prepublishCommand}`, { cwd: linkedPkgPath });
-
       if (changedPackages.find(pkg => pkg.name === linkedPkgName)) {
         // do nothing when the package has exist in changed packages
       } else {
@@ -91,8 +86,8 @@ const commitMessage = (commitBranch: string) => {
 
 switch (config.versionUpgradeStep) {
   case versionUpgradeStep.patch:
-  execPublish();
-  if (config.commitBranch) { commitMessage(config.commitBranch); }
-  break;
+    execPublish();
+    if (config.commitBranch) { commitMessage(config.commitBranch); }
+    break;
   default: console.log('not supported'); break;
 }

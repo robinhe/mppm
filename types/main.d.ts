@@ -33,7 +33,6 @@ interface IConfig {
   commitBranch?: string;
   commitMessage?: string;
   versionUpgradeStep: string;
-  prepublishCommand: string;
 }
 
 interface IPublishedPackage {

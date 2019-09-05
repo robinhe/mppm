@@ -33,8 +33,6 @@ Below config arguments can be set:
 Default value is `['packages/*']`
 2. versionUpgradeStep  
 Currently it only supports `patch`
-3. prepublishCommand  
-Default is `dist`, it will always run `npm run dist` before publish each package
 4. commitBranch  
 Specified branch to be committed
 5. commitMessage  

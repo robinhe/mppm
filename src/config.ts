@@ -25,7 +25,6 @@ const defaultConfig = {
   publishRegistry: 'https://registry.npmjs.org/',
   commitMessage: 'Packages published',
   versionUpgradeStep: versionUpgradeStep.patch,
-  prepublishCommand: 'dist',
 };
 
 // fixedConfig include some features which will be supported in future
