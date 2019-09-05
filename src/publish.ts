@@ -4,6 +4,7 @@ import { execSync } from 'child_process';
 
 import { changedPackages } from './changed';
 import { getConfig, packageMaps, versionUpgradeStep } from './config';
+import { logError, logSuccess } from './helpers';
 
 /**
  * 1. check current publish branch config
@@ -69,7 +70,10 @@ const execPublish = () => {
     });
   });
 
-  console.log('publish packages successfully:', publishedPackages);
+  const publishedPackagesInfo = publishedPackages
+    .map(item => `${item.name} ${item.previousVersion} => ${item.newVersion}`)
+    .join('\n');
+  logSuccess('publish packages successfully: ', `\n${publishedPackagesInfo}`);
 };
 
 const commitMessage = (commitBranch: string) => {
@@ -89,5 +93,5 @@ switch (config.versionUpgradeStep) {
     execPublish();
     if (config.commitBranch) { commitMessage(config.commitBranch); }
     break;
-  default: console.log('not supported'); break;
+  default: logError('mppm error: ', `step not supported`); break;
 }

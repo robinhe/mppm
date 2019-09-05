@@ -4,8 +4,7 @@ import { copyFileSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
 import { packageMaps, packageNames } from './config';
-
-// console.log(packageMaps);
+import { logNormal } from './helpers';
 
 packageMaps.forEach(({ name, path, packageJsonObj }) => {
   const installedDevDependencies: IDependencyObj[] = [];
@@ -51,7 +50,7 @@ packageMaps.forEach(({ name, path, packageJsonObj }) => {
   writeFileSync(sourcePackageJsonFile, JSON.stringify(packageJsonObjWithoutLinkedPackages, null, 2));
 
   // install
-  console.log(execSync('npm i', { cwd: path }).toString());
+  logNormal(execSync('npm i', { cwd: path }).toString());
 
   // put back link packages into package.json
   copyFileSync(destPackageJsonFile, sourcePackageJsonFile);
@@ -60,7 +59,6 @@ packageMaps.forEach(({ name, path, packageJsonObj }) => {
   // link
   // todo: need it check whether the versions are consitent before link internal packages?
   const linkedPackages = [...linkedDevDependencies, ...linkedDependencies];
-  // console.log(linkedPackages);
   linkedPackages.forEach(linkedPackage => {
     const linkedPackageMap =
       packageMaps.find(packageMap => packageMap.name === linkedPackage.name);

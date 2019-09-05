@@ -8,12 +8,12 @@ const colors = {
   Hidden : '\x1b[8m',
 
   FgBlack : '\x1b[30m',
-  FgRed : '\x1b[31m',
-  FgGreen : '\x1b[32m',
-  FgYellow : '\x1b[33m',
-  FgBlue : '\x1b[34m',
+  FgRed : '\x1b[1;31m',
+  FgGreen : '\x1b[1;32m',
+  FgYellow : '\x1b[1;33m',
+  FgBlue : '\x1b[1;34m',
   FgMagenta : '\x1b[35m',
-  FgCyan : '\x1b[36m',
+  FgCyan : '\x1b[1;36m',
   FgWhite : '\x1b[37m',
 
   BgBlack : '\x1b[40m',
@@ -26,14 +26,24 @@ const colors = {
   BgWhite : '\x1b[47m',
 };
 
-export const logError = (str: string) => {
-  return console.log(colors.FgRed + str + '\x1b[0m');
+export const logError = (title: string, str: string) => {
+  return console.log(colors.FgRed + title + '\x1b[0m', str);
 };
 
-export const logSuccess = (str: string) => {
-  return console.log(colors.FgGreen + str + '\x1b[0m');
+export const logSuccess = (title: string, str: string) => {
+  return console.log(colors.FgGreen + title + '\x1b[0m', str);
 };
 
-export const logInfo = (str: string) => {
-  return console.log(colors.FgBlue + str + '\x1b[0m');
+export const logInfo = (title: string, str: string) => {
+  return console.log(colors.FgCyan + title + '\x1b[0m', str);
 };
+
+export const logNormal = (anyObj: any, forceOutputString: boolean = true) => {
+  if (forceOutputString && !(anyObj instanceof String)) {
+    console.log(anyObj.toString());
+  } else {
+    console.log(anyObj);
+  }
+};
+
+// a process log should contain start info, end success and some errors

@@ -3,6 +3,7 @@ import * as glob from 'glob';
 import { resolve } from 'path';
 
 import { packageMaps } from './config';
+import { logInfo } from './helpers';
 
 const changedFiles = execSync('git diff --name-only HEAD HEAD~1').toString().split('\n');
 // const commitIds = execSync('git rev-list HEAD').toString().split('\n');
@@ -32,5 +33,4 @@ packageMaps.forEach(({ name, path, packageJsonObj }) => {
     });
   }
 });
-// console.log('changedFilePaths', changedFilePaths);
-console.log('changedPackages: ', changedPackages.map(item => item.name).join());
+logInfo('mppm info: ', `changedPackages: ${changedPackages.map(item => item.name).join()}`);
