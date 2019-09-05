@@ -36,5 +36,5 @@ switch (mppmArgvs[0]) {
   case 'bootstrap': bootstrap(); break;
   case 'publish': publish(); break;
   case 'run': run(mppmArgvs); break;
-  default: logError('mppm error: ', 'argv is invalid'); break;
+  default: logError('mppm error: ', 'argv is invalid'); execSync('exit 1'); break;
 }

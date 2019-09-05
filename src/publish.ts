@@ -93,5 +93,5 @@ switch (config.versionUpgradeStep) {
     execPublish();
     if (config.commitBranch) { commitMessage(config.commitBranch); }
     break;
-  default: logError('mppm error: ', `step not supported`); break;
+  default: logError('mppm error: ', `step not supported`); execSync('exit 1'); break;
 }
