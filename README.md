@@ -1,3 +1,10 @@
+<p align="left">
+  <a href="https://travis-ci.org/helongbin/mppm">
+    <img alt="Travis Status" src="https://img.shields.io/travis/helongbin/mppm/master.svg?style=flat&label=travis">
+  </a>
+</p>
+
+
 * [Usage](#Usage)
 * [Config](#Config)
 * [Command](#command)
