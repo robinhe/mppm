@@ -13,7 +13,7 @@ deploy:
   script: npm publish
   skip_cleanup: true
   on:
-    branchs: 
+    branches: 
       only:
         - /^publish.*$/
     tags: false
