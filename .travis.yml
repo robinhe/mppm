@@ -14,5 +14,5 @@ deploy:
   skip_cleanup: true
   on:
     branch: 
-        - /^publish.*$/
+      - /^publish.*$/
     tags: false
