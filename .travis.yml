@@ -10,7 +10,7 @@ install: yarn
 script: npm run build
 deploy:
   provider: script
-  script: npm publish --_authToken=${API_TOKEN}
+  script: npm publish --_authToken=$API_TOKEN
   skip_cleanup: true
   on:
     all_branches: true
