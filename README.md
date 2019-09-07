@@ -2,6 +2,9 @@
   <a href="https://travis-ci.org/helongbin/mppm">
     <img alt="Travis Status" src="https://img.shields.io/travis/helongbin/mppm/master.svg?style=flat&label=travis">
   </a>
+  <a href="https://www.npmjs.com/package/mppm">
+    <img alt="NPM version" src="https://img.shields.io/npm/v/mppm">
+  </a>
 </p>
 
 
