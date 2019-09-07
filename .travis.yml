@@ -10,7 +10,7 @@ install: yarn
 script: npm run build
 deploy:
   provider: script
-  script: npm publish
+  script: npm publish --userconfig=$TRAVIS_BUILD_DIR/.npmrc
   skip_cleanup: true
   on:
     all_branches: true
