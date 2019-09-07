@@ -9,9 +9,8 @@ before_install: node -v && npm -v && npm config ls -g
 install: yarn
 script: npm run build
 deploy:
-  provider: npm
-  email: csuhlb@gmail.com
-  api_key: $API_TOKEN
+  provider: script
+  script: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > $HOME/.npmrc && npm publish
   skip_cleanup: true
   on:
     all_branches: true
