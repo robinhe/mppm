@@ -4,7 +4,7 @@ node_js:
 branches:
   only:
     - master
-    - /^publish*$/
+    - /^publish.*$/
 before_install: node -v && npm -v && npm config ls -g
 install: yarn
 script: npm run build
@@ -13,5 +13,5 @@ deploy:
   script: npm publish
   skip_cleanup: true
   on:
-    branch: /^publish*$/
+    branch: /^publish.*$/
     tags: false
