@@ -13,6 +13,6 @@ deploy:
   script: npm publish
   skip_cleanup: true
   on:
-    branch: 
-      - /^publish.*$/
+    all_branches: true
+    condition: ${$TRAVIS_BRANCH} =~ ^publish.*$
     tags: false
