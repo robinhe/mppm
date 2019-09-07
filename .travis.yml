@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "8.14.1"
+  - 8.14.1
 branches:
   only:
     - master
@@ -9,8 +9,9 @@ before_install: node -v && npm -v && npm config ls -g
 install: yarn
 script: npm run build
 deploy:
-  provider: script
-  script: npm publish --_authToken=$API_TOKEN
+  provider: npm
+  email: csuhlb@gmail.com
+  api_key: $API_TOKEN
   skip_cleanup: true
   on:
     all_branches: true
