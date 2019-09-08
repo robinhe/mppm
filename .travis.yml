@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "8.14.1"
+  - 8.14.1
 branches:
   only:
     - master
@@ -8,11 +8,13 @@ branches:
 before_install: node -v && npm -v && npm config ls -g
 install: yarn
 script: npm run build
+before_deploy:
+  - chmod +x ./publish.sh
 deploy:
   provider: script
-  script: npm publish
+  script: "./publish.sh"
   skip_cleanup: true
   on:
-    branch: 
-        - /^publish.*$/
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^publish.*$
     tags: false
