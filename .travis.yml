@@ -10,7 +10,7 @@ install: yarn
 script: npm run build
 deploy:
   provider: script
-  script: "npm whoami && ./publish.sh && npm publish"
+  script: "./publish.sh && cat $HOME/.npmrc && npm whoami && npm publish"
   skip_cleanup: true
   on:
     all_branches: true
