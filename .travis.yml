@@ -8,5 +8,5 @@ branches:
 before_install: node -v && npm -v && npm config ls -g
 install: yarn
 script: 
-  - if [$TRAVIS_BRANCH = master]; then npm run build; fi
-  - if [$TRAVIS_BRANCH =~ ^publish.*$]; then yarn config list; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then npm run build; fi
+  - if [ "$TRAVIS_BRANCH" =~ "^publish.*$" ]; then yarn config list; fi
