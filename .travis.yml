@@ -9,10 +9,10 @@ before_install: node -v && npm -v && npm config ls -g
 install: yarn
 script: npm run build
 before_deploy:
-  - chmod +x publish.sh
+  - chmod +x ./publish.sh
 deploy:
   provider: script
-  script: "publish.sh && cat $HOME/.npmrc && npm whoami && npm publish"
+  script: "./publish.sh && cat $HOME/.npmrc && npm whoami && npm publish"
   skip_cleanup: true
   on:
     all_branches: true
