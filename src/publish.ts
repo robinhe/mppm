@@ -56,16 +56,25 @@ const execPublish = () => {
    * loop packageMaps, also change packages version which depends on the package
    */
   changedPackages.forEach(({ name, version, packagesLinkThePackage }) => {
+    // prevent publishing when the package is in the blacklist
+    if (config.publishBlacklist.includes(name)) { return ; }
+
     const pkg = packageMaps.find(pkg => pkg.name === name);
     const newVersion = getNewVersion(version);
     publishPackage({ path: pkg!.path, version, name });
 
+    if (!config.shouldPublishWhenDependencyPublished) { return ; }
+
     packagesLinkThePackage.forEach(({ path: linkedPkgPath, version: linkedPkgVersion, name: linkedPkgName }) => {
-      changePackageDependencyVersion(linkedPkgPath, name, newVersion);
-      if (changedPackages.find(pkg => pkg.name === linkedPkgName)) {
-        // do nothing when the package has exist in changed packages
+      if (config.publishBlacklist.includes(linkedPkgName)) {
+        // prevent publishing when the package is in the blacklist
       } else {
-        publishPackage({ path: linkedPkgPath, version: linkedPkgVersion, name: linkedPkgName });
+        changePackageDependencyVersion(linkedPkgPath, name, newVersion);
+        if (changedPackages.find(pkg => pkg.name === linkedPkgName)) {
+          // do nothing when the package has exist in changed packages
+        } else {
+          publishPackage({ path: linkedPkgPath, version: linkedPkgVersion, name: linkedPkgName });
+        }
       }
     });
   });

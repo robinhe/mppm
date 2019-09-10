@@ -23,6 +23,8 @@ const defaultConfig = {
   packages: ['packages/*'],
   publishBranch: 'origin/master',
   publishRegistry: 'https://registry.npmjs.org/',
+  publishBlacklist: [],
+  shouldPublishWhenDependencyPublished: true,
   commitMessage: 'Packages published',
   versionUpgradeStep: versionUpgradeStep.patch,
 };

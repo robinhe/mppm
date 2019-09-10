@@ -38,7 +38,16 @@ npm install -D mppm
 
 ## Config
 Initialize mppm config with `mppm.config.js` in root folder.  
-Below config arguments can be set:
+
+eg:
+```
+module.exports = {
+  packages: ['packages/*'],
+  versionUpgradeStep: 'patch',
+  publishRegistry: 'https://registry.npmjs.org/'
+}
+```
+Above config arguments can be set:
 1. packages  
 Default value is `['packages/*']`
 2. versionUpgradeStep  
@@ -47,8 +56,12 @@ Currently it only supports `patch`
 Specified branch to be committed
 5. commitMessage  
 Specified message to be committed
-6. publishRegistry
+6. publishRegistry  
 Your registry to publish, default is `https://registry.npmjs.org/`
+7. shouldPublishWhenDependencyPublished  
+Whether the package should be also published when its dependency (a package exists in your project) is published
+8. publishBlacklist  
+Specify which packages could not be published whatever
 
 ## Command
 ### bootsrap
