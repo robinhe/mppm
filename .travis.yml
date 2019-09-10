@@ -7,7 +7,7 @@ branches:
     - /^publish.*$/
 before_install: node -v && npm -v && npm config ls -g
 install: yarn
-script: yarn config list && npm run build
+script: npm run build
 before_deploy:
   - chmod +x ./publish.sh
 deploy:

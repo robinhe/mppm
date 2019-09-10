@@ -30,6 +30,8 @@ interface IConfig {
   packages: string[];
   publishBranch: string;
   publishRegistry: string;
+  publishBlacklist: string[];
+  shouldPublishWhenDependencyPublished: boolean;
   commitBranch?: string;
   commitMessage?: string;
   versionUpgradeStep: string;
