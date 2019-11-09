@@ -33,7 +33,6 @@ const defaultConfig = {
 const fixedConfig = {
   // todo: support the feature all packages version are "consistent"
   versionAssociation: versionAssociation.indenpendent,
-  versionUpgradeStep: versionUpgradeStep.patch,
 };
 
 export const getConfig = (): IConfig => {

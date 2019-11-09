@@ -56,7 +56,11 @@ Above config arguments can be set:
 1. packages  
 Default value is `['packages/*']`
 2. versionUpgradeStep  
-Currently it only supports `patch`
+   - `major`, if versionUpgradeStep is `major`, the major version will be changed, eg: `1.1.1 => 2.0.0`
+   - `minor`, `1.1.1 => 1.2.0`
+   - `patch`, `1.1.1 => 1.1.2`
+   - `<other>`, `1.1.1 => 1.1.1-<other>.<commitId>`
+
 4. commitBranch  
 Specified branch to be committed
 5. commitMessage  
