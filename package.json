@@ -7,7 +7,6 @@
     "packages manager",
     "npm packages"
   ],
-  "main": "index.js",
   "files": [
     "dist/*"
   ],

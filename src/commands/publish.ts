@@ -3,8 +3,8 @@ import { readFileSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 
 import { changedPackages } from './changed';
-import { getConfig, packageMaps, versionUpgradeStep } from './config';
-import { logError, logSuccess } from './helpers';
+import { getConfig, packageMaps, versionUpgradeStep } from '../config';
+import { logError, logSuccess } from '../utils/log';
 
 /**
  * 1. check current publish branch config

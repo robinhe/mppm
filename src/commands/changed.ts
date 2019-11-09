@@ -1,9 +1,8 @@
 import { execSync } from 'child_process';
-import * as glob from 'glob';
 import { resolve } from 'path';
 
-import { packageMaps } from './config';
-import { logInfo } from './helpers';
+import { packageMaps } from '../config';
+import { logInfo } from '../utils/log';
 
 const changedFiles = execSync('git diff --name-only HEAD HEAD~1').toString().split('\n');
 // const commitIds = execSync('git rev-list HEAD').toString().split('\n');

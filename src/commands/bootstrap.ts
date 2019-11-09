@@ -3,10 +3,12 @@ import { execSync } from 'child_process';
 import { copyFileSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path';
 
-import { packageMaps, packageNames } from './config';
-import { logNormal } from './helpers';
+import { packageMaps, packageNames } from '../config';
+import { logNormal } from '../utils/log';
 
 packageMaps.forEach(({ name, path, packageJsonObj }) => {
+  logNormal(`cwd: ${path}`);
+
   const installedDevDependencies: IDependencyObj[] = [];
   const installedDependencies: IDependencyObj[] = [];
   const linkedDevDependencies: IDependencyObj[] = [];

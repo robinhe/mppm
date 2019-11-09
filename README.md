@@ -1,4 +1,7 @@
-<p align="left">
+<h1 align="center">
+  mppm
+</h1>
+<p align="center">
   <a href="https://travis-ci.org/helongbin/mppm">
     <img alt="Travis Status" src="https://img.shields.io/travis/helongbin/mppm/master.svg?style=flat&label=travis">
   </a>
@@ -12,6 +15,8 @@
 * [Config](#Config)
 * [Command](#command)
   * [bootsrap](#bootsrap)
+  * [run](#run)
+  * [changed](#changed)
   * [publish](#publish)
 
 ------
@@ -70,6 +75,18 @@ npx mppm bootstrap
 ``` 
 It will install dependencies and devDependencies for each package.  
 If there are dependencies between packages, they will be linked each other. 
+
+### run
+```
+npx mppm run <command>
+``` 
+It will execute `npm run <command>` for each package.  
+
+### changed
+```
+npx mppm changed
+``` 
+It will get all changed packages since last commit
 
 ### publish
 ```

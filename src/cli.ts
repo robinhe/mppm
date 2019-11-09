@@ -1,32 +1,49 @@
 #!/usr/bin/env node
 import { execSync } from 'child_process';
 import { resolve } from 'path';
-import { logError, logNormal, logInfo } from './helpers';
+import { executeSpawn } from './utils/execute';
+import { logError, logNormal, logInfo } from './utils/log';
 
 const changed = () => {
-  const file = resolve(__dirname, './changed');
+  const file = resolve(__dirname, './commands/changed');
   logNormal(execSync(`node ${file}`).toString());
 };
 
 const bootstrap = () => {
   logInfo('mppm info: ', 'will execute "bootstrap"');
-  const file = resolve(__dirname, './bootstrap');
-  logNormal(execSync(`node ${file}`).toString());
-  logInfo('mppm info: ', 'execute "bootstrap" successfully');
+  const file = resolve(__dirname, './commands/bootstrap');
+
+  executeSpawn(
+    'node',
+    [`${file}`],
+    {},
+    () => {
+      logInfo('mppm info: ', 'execute "bootstrap" successfully');
+      process.exit(0);
+    },
+  );
 };
 
 const publish = () => {
   logInfo(`mppm info: `, `will publish packages`);
-  const file = resolve(__dirname, './publish');
+  const file = resolve(__dirname, './commands/publish');
   logNormal(execSync(`node ${file}`).toString());
 };
 
 const run = (mppmArgvs: string[]) => {
   logInfo(`mppm info: `, `will execute "npm run ${mppmArgvs[1]}" for each package`);
-  const file = resolve(__dirname, './run');
-  const argvs = mppmArgvs.join(' ')
-  logNormal(execSync(`node ${file} ${argvs}`).toString());
-  logInfo(`mppm info: `, `execute "npm run ${mppmArgvs[1]}" successfully`);
+  const file = resolve(__dirname, './commands/run');
+  const argvs = mppmArgvs.join(' ');
+
+  executeSpawn(
+    'node',
+    [`${file}`, `${argvs}`],
+    {},
+    () => {
+      logInfo(`mppm info: `, `execute "run ${mppmArgvs[1]}" successfully`);
+      process.exit(0);
+    },
+  );
 };
 
 const mppmArgvs = process.argv.slice(2);
