@@ -48,18 +48,24 @@ eg:
 ```
 module.exports = {
   packages: ['packages/*'],
-  versionUpgradeStep: 'patch',
+  versionStep: 'patch',
   publishRegistry: 'https://registry.npmjs.org/'
 }
 ```
 Above config arguments can be set:
 1. packages  
 Default value is `['packages/*']`
-2. versionUpgradeStep  
-   - `major`, if versionUpgradeStep is `major`, the major version will be changed, eg: `1.1.1 => 2.0.0`
+2. versionStep  
+   - `major`, if versionStep is `major`, the major version will be changed, eg: `1.1.1 => 2.0.0`
    - `minor`, `1.1.1 => 1.2.0`
    - `patch`, `1.1.1 => 1.1.2`
-   - `<other>`, `1.1.1 => 1.1.1-<other>.<commitId>`
+   - `premajor`, `1.1.1 => 2.0.0-0`
+   - `preminor`, `1.1.1 => 1.2.0-0`
+   - `prepatch`, `1.1.1 => 1.1.2-0`
+   - `prerelease`, `1.1.1 => 1.1.2-0`
+3. versionPreid  
+It only works when `versionStep` is one of `prerelease | prepatch | preminor | premajor`.
+Eg, if `versionStep` is `prelease` and `versionPreid` is `beta`, version will be changed like `1.1.1 => 1.1.2-beta.0`
 
 4. commitBranch  
 Specified branch to be committed
@@ -67,10 +73,6 @@ Specified branch to be committed
 Specified message to be committed
 6. publishRegistry  
 Your registry to publish, default is `https://registry.npmjs.org/`
-7. shouldPublishWhenDependencyPublished  
-Whether the package should be also published when its dependency (a package exists in your project) is published
-8. publishBlacklist  
-Specify which packages could not be published whatever
 
 ## Command
 ### bootsrap

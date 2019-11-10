@@ -13,20 +13,25 @@ export const enum versionAssociation {
   indenpendent = 'independent',
   consistent = 'consistent',
 }
-export const enum versionUpgradeStep {
+enum versionStepEnum {
   patch = 'patch',
   minor = 'minor',
   major = 'major',
+  premajor = 'premajor',
+  preminor = 'preminor',
+  prepatch = 'prepatch',
+  prerelease = 'prerelease',
 }
 
 const defaultConfig = {
   packages: ['packages/*'],
   publishBranch: 'origin/master',
   publishRegistry: 'https://registry.npmjs.org/',
-  publishBlacklist: [],
-  shouldPublishWhenDependencyPublished: true,
+  publishBlacklist: [], // todo: remove this
+  shouldPublishWhenDependencyPublished: true, // todo: remove this
   commitMessage: 'Packages published',
-  versionUpgradeStep: versionUpgradeStep.patch,
+  versionStep: versionStepEnum.patch,
+  versionPreid: 'alpha',
 };
 
 // fixedConfig include some features which will be supported in future

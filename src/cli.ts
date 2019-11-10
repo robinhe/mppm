@@ -27,7 +27,15 @@ const bootstrap = () => {
 const publish = () => {
   logInfo(`mppm info: `, `will publish packages`);
   const file = resolve(__dirname, './commands/publish');
-  logNormal(execSync(`node ${file}`).toString());
+  executeSpawn(
+    'node',
+    [`${file}`],
+    {},
+    () => {
+      logInfo(`mppm info: `, `execute "publish" successfully`);
+      process.exit(0);
+    },
+  );
 };
 
 const run = (mppmArgvs: string[]) => {

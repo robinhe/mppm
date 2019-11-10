@@ -34,7 +34,8 @@ interface IConfig {
   shouldPublishWhenDependencyPublished: boolean;
   commitBranch?: string;
   commitMessage?: string;
-  versionUpgradeStep: string;
+  versionStep: string;
+  versionPreid: string;
 }
 
 interface IPublishedPackage {

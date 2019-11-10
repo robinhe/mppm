@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { execSync } from 'child_process';
 
 import { changedPackages } from './changed';
-import { getConfig, packageMaps, versionUpgradeStep } from '../config';
+import { getConfig, packageMaps } from '../config';
 import { logError, logSuccess } from '../utils/log';
 
 /**
@@ -19,37 +19,9 @@ import { logError, logSuccess } from '../utils/log';
 const config = getConfig();
 const publishedPackages: IPublishedPackage[] = [];
 
-const getNewVersion = (version: string) => {
-  if (config.versionUpgradeStep === versionUpgradeStep.major) {
-    // 0.0.1 => 1.0.0
-    return version.replace(/(\d.*)/, (match, $1) => {
-      return `${parseInt($1, 10) + 1}.0.0`;
-    });
-  } else if (config.versionUpgradeStep === versionUpgradeStep.minor) {
-    // 0.0.1 => 0.1.0
-    return version.replace(/(\d+\.)(\d.*)/, (match, $1, $2) => {
-      return `${$1}${parseInt($2, 10) + 1}.0`;
-    });
-  } else if (config.versionUpgradeStep === versionUpgradeStep.patch) {
-    // 0.0.1 => 0.0.2
-    return version.replace(/(\d+\.\d+\.)(\d.*)/, (match, $1, $2) => {
-      return `${$1}${parseInt($2, 10) + 1}`;
-    });
-  } else {
-    // 0.0.1 => 0.0.1-alpha.xxxxxxx
-    const commitHash = execSync('git rev-parse HEAD').toString();
-    const step = config.versionUpgradeStep;
-    return version.replace(/(\d+\.\d+\.)(\d.*)/, (match, $1, $2) => {
-      return `${$1}${parseInt($2, 10)}-${step}.${commitHash.substring(0, 7)}`;
-    });
-  }
-};
-
-const changePackageVersion = (pkgPath: string, newVersion: string) => {
-  const packageJsonFile = join(pkgPath, '/package.json');
-  const newJsonString = readFileSync(packageJsonFile).toString()
-    .replace(/("version": ")(.*?)"/, (match, $1, $2) => `${$1}${newVersion}"`);
-  writeFileSync(packageJsonFile, newJsonString);
+const changePackageVersion = (pkgPath: string) => {
+  return execSync(`npm version ${config.versionStep} --preid=${config.versionPreid}`, { cwd: pkgPath })
+  .toString().trim().slice(1);
 };
 
 const changePackageDependencyVersion = (pkgPath: string, dependencyName: string, dependencyVersion: string) => {
@@ -60,11 +32,9 @@ const changePackageDependencyVersion = (pkgPath: string, dependencyName: string,
   writeFileSync(packageJsonFile, newJsonString);
 };
 
-const publishPackage = ({ name, version, path }: IPackageInfo) => {
-  const newVersion = getNewVersion(version);
-  changePackageVersion(path, newVersion);
-  execSync(`npm publish --registry ${config.publishRegistry}`, { cwd: path });
-  publishedPackages.push({ name, previousVersion: version, newVersion });
+const publishPackage = (path: string) => {
+  const tag = ['patch', 'minor', 'major'].includes(config.versionStep) ? 'latest' : 'beta';
+  execSync(`npm publish --tag ${tag} --registry ${config.publishRegistry}`, { cwd: path });
 };
 
 const execPublish = () => {
@@ -78,8 +48,9 @@ const execPublish = () => {
     if (config.publishBlacklist.includes(name)) { return ; }
 
     const pkg = packageMaps.find(pkg => pkg.name === name);
-    const newVersion = getNewVersion(version);
-    publishPackage({ path: pkg!.path, version, name });
+    const newVersion = changePackageVersion(pkg!.path);
+    publishPackage(pkg!.path);
+    publishedPackages.push({ name, previousVersion: version, newVersion });
 
     if (!config.shouldPublishWhenDependencyPublished) { return ; }
 
@@ -91,7 +62,9 @@ const execPublish = () => {
         if (changedPackages.find(pkg => pkg.name === linkedPkgName)) {
           // do nothing when the package has exist in changed packages
         } else {
-          publishPackage({ path: linkedPkgPath, version: linkedPkgVersion, name: linkedPkgName });
+          const newVersion = changePackageVersion(linkedPkgPath);
+          publishPackage(linkedPkgPath);
+          publishedPackages.push({ name, previousVersion: version, newVersion });
         }
       }
     });
@@ -112,7 +85,10 @@ const commitMessage = (commitBranch: string) => {
   const commitDetails = publishedPackages.map(item => ` -m "- ${item.name}@${item.newVersion}"`).join('');
   execSync('git add .');
   execSync(`git commit -m "${config.commitMessage}" ${commitDetails}`);
-  execSync(`git push origin HEAD:${commitBranch.replace(/origin\//, '')}`);
+  publishedPackages.forEach(({ name, newVersion }) => {
+    execSync(`git tag ${name}@${newVersion}`);
+  });
+  execSync(`git push origin HEAD:${commitBranch.replace(/origin\//, '')} --tags`);
 };
 
 execPublish();
