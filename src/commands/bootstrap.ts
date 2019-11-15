@@ -1,6 +1,6 @@
 
 import { execSync } from 'child_process';
-import { copyFileSync, readFileSync, writeFileSync } from 'fs';
+import { copyFileSync, readFileSync, writeFileSync, unlinkSync } from 'fs';
 import { resolve } from 'path';
 
 import { packageMaps, packageNames } from '../config';
@@ -56,7 +56,7 @@ packageMaps.forEach(({ name, path, packageJsonObj }) => {
 
   // put back link packages into package.json
   copyFileSync(destPackageJsonFile, sourcePackageJsonFile);
-  execSync(`rm -fr ${destPackageJsonFile}`, { cwd: path });
+  unlinkSync(`${destPackageJsonFile}`);
 
   // link
   // todo: need it check whether the versions are consitent before link internal packages?
